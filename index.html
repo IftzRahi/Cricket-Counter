@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cricket Counter</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Cricket Counter</p>
+          <h1 id="match-title">Team A vs Team B</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="secondary" type="button" data-action="undo">Undo</button>
+          <button class="danger" type="button" data-action="new-match">New Match</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="score-band" aria-label="Current score">
+          <div class="score-main">
+            <span id="innings-label" class="innings-label">Team A batting</span>
+            <div id="score-text" class="score-text">0/0</div>
+            <div class="score-meta">
+              <span>Overs <strong id="overs-text">0.0</strong></span>
+              <span>CRR <strong id="run-rate">0.00</strong></span>
+              <span id="required-rate-meta">RRR <strong>-</strong></span>
+              <span id="target-meta">Target <strong>-</strong></span>
+              <span id="free-hit-meta" class="free-hit-pill">Free hit</span>
+            </div>
+            <p id="status-line" class="status-line">Ready</p>
+          </div>
+          <div class="pitch-visual" aria-hidden="true">
+            <div class="crease crease-top"></div>
+            <div class="stumps stumps-top"><span></span><span></span><span></span></div>
+            <div class="pitch-mark"></div>
+            <div class="stumps stumps-bottom"><span></span><span></span><span></span></div>
+            <div class="crease crease-bottom"></div>
+          </div>
+        </section>
+
+        <section class="panel setup-panel" aria-labelledby="setup-heading">
+          <div class="panel-heading">
+            <h2 id="setup-heading">Match</h2>
+          </div>
+          <div class="setup-grid">
+            <label>
+              Team A
+              <input id="team-a-input" type="text" value="Riverside XI" />
+            </label>
+            <label>
+              Team B
+              <input id="team-b-input" type="text" value="Harbor CC" />
+            </label>
+            <label>
+              Overs
+              <input id="overs-input" type="number" min="1" max="50" value="20" />
+            </label>
+            <label>
+              Bat first
+              <select id="bat-first-input">
+                <option value="teamA">Team A</option>
+                <option value="teamB">Team B</option>
+              </select>
+            </label>
+          </div>
+          <button class="primary full-width" type="button" data-action="start-match">Start Match</button>
+        </section>
+
+        <section class="panel batters-panel" aria-labelledby="batters-heading">
+          <div class="panel-heading">
+            <h2 id="batters-heading">On Strike</h2>
+            <button class="secondary small" type="button" data-action="swap-strike">Swap Strike</button>
+          </div>
+          <div id="batters-list" class="batters-list"></div>
+        </section>
+
+        <section class="panel bowling-panel" aria-labelledby="bowling-heading">
+          <div class="panel-heading">
+            <h2 id="bowling-heading">Bowler</h2>
+            <button class="secondary small" type="button" data-action="add-bowler">Add Bowler</button>
+          </div>
+          <label>
+            Current bowler
+            <select id="bowler-select"></select>
+          </label>
+          <div id="bowling-card" class="scorecard bowling-card"></div>
+        </section>
+
+        <section class="panel controls-panel" aria-labelledby="runs-heading">
+          <div class="panel-heading">
+            <h2 id="runs-heading">Runs</h2>
+          </div>
+          <div class="run-grid" role="group" aria-label="Runs">
+            <button type="button" data-score-control data-run="0">0</button>
+            <button type="button" data-score-control data-run="1">1</button>
+            <button type="button" data-score-control data-run="2">2</button>
+            <button type="button" data-score-control data-run="3">3</button>
+            <button type="button" data-score-control data-run="4">4</button>
+            <button type="button" data-score-control data-run="6">6</button>
+          </div>
+          <div class="action-row">
+            <button class="danger" type="button" data-score-control data-action="wicket">Wicket</button>
+            <button class="secondary" type="button" data-action="end-innings">End Innings</button>
+            <button class="primary" type="button" data-action="start-next-innings">Start Chase</button>
+          </div>
+        </section>
+
+        <section class="panel extras-panel" aria-labelledby="extras-heading">
+          <div class="panel-heading">
+            <h2 id="extras-heading">Extras</h2>
+          </div>
+          <p class="button-group-label">Wides</p>
+          <div class="extras-grid" role="group" aria-label="Extras">
+            <button type="button" data-score-control data-extra-kind="wide" data-extra-taken="0">Wd</button>
+            <button type="button" data-score-control data-extra-kind="wide" data-extra-taken="1">Wd+1</button>
+            <button type="button" data-score-control data-extra-kind="wide" data-extra-taken="2">Wd+2</button>
+            <button type="button" data-score-control data-extra-kind="wide" data-extra-taken="3">Wd+3</button>
+            <button type="button" data-score-control data-extra-kind="wide" data-extra-taken="4">Wd+4</button>
+          </div>
+          <p class="button-group-label">No balls</p>
+          <div class="extras-grid" role="group" aria-label="No balls">
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="0">Nb</button>
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="1">Nb+1</button>
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="2">Nb+2</button>
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="3">Nb+3</button>
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="4">Nb+4</button>
+            <button type="button" data-score-control data-extra-kind="noBall" data-extra-taken="6">Nb+6</button>
+          </div>
+          <p class="button-group-label">Byes</p>
+          <div class="extras-grid" role="group" aria-label="Byes">
+            <button type="button" data-score-control data-extra-kind="bye" data-extra-taken="1">B 1</button>
+            <button type="button" data-score-control data-extra-kind="bye" data-extra-taken="2">B 2</button>
+            <button type="button" data-score-control data-extra-kind="bye" data-extra-taken="3">B 3</button>
+            <button type="button" data-score-control data-extra-kind="bye" data-extra-taken="4">B 4</button>
+          </div>
+          <p class="button-group-label">Leg byes</p>
+          <div class="extras-grid" role="group" aria-label="Leg byes">
+            <button type="button" data-score-control data-extra-kind="legBye" data-extra-taken="1">Lb 1</button>
+            <button type="button" data-score-control data-extra-kind="legBye" data-extra-taken="2">Lb 2</button>
+            <button type="button" data-score-control data-extra-kind="legBye" data-extra-taken="3">Lb 3</button>
+            <button type="button" data-score-control data-extra-kind="legBye" data-extra-taken="4">Lb 4</button>
+          </div>
+          <dl class="extras-total">
+            <div><dt>Wides</dt><dd id="wide-total">0</dd></div>
+            <div><dt>No balls</dt><dd id="noball-total">0</dd></div>
+            <div><dt>Byes</dt><dd id="bye-total">0</dd></div>
+            <div><dt>Leg byes</dt><dd id="legbye-total">0</dd></div>
+          </dl>
+        </section>
+
+        <section class="panel batting-card-panel" aria-labelledby="batting-card-heading">
+          <div class="panel-heading">
+            <h2 id="batting-card-heading">Batting Card</h2>
+          </div>
+          <div id="batting-card" class="scorecard batting-card"></div>
+        </section>
+
+        <section class="panel summary-panel" aria-labelledby="summary-heading">
+          <div class="panel-heading">
+            <h2 id="summary-heading">Innings</h2>
+          </div>
+          <div id="innings-summary" class="innings-summary"></div>
+        </section>
+
+        <section class="panel log-panel" aria-labelledby="log-heading">
+          <div class="panel-heading">
+            <h2 id="log-heading">Ball Log</h2>
+          </div>
+          <ol id="delivery-log" class="delivery-log"></ol>
+        </section>
+
+        <section class="panel report-panel" aria-labelledby="report-heading">
+          <div class="panel-heading">
+            <h2 id="report-heading">Match Report</h2>
+            <button class="primary small" type="button" data-action="download-report">Download PDF</button>
+          </div>
+          <div id="match-report" class="match-report"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
