@@ -1,4 +1,4 @@
-# 🏏 Cricket Counter
+# 🏏 Cricket Counter (Vibe Coded)
 
 A modern, lightweight, and intuitive cricket scoreboard application for tracking live match statistics in real-time.
 
