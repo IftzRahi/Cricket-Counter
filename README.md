@@ -93,17 +93,6 @@ Update this section according to your implementation.
 6. Reset or start a new match when completed.
 
 
-## 🚀 Roadmap
-
-* [ ] Bowling statistics
-* [ ] Full team management
-* [ ] Match history storage
-* [ ] Local storage persistence
-* [ ] Export scorecard as PDF
-* [ ] Dark mode
-* [ ] Live multiplayer scoring
-
-
 ## 👨‍💻 Author
 
 Rahi
